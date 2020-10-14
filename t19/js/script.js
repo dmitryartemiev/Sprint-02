@@ -1,69 +1,33 @@
 "use strict";
 
-function checkBrackets(x) {
+function checkBrackets(arg) {
   // набор переменных
-  let countLeft = 0;
-  let countRight = 0;
-  let sum = 0;
-    let countLeftSum =0;
-    let countRightSum =0;
 
-  // проверка строка ли это и есть ли в ней ()
-  if (!(typeof x === "string") || !x.match(/[()]/)) {
-    sum = -1;
+  let stack = [];
+
+  // проверка строка ли это или есть ли в ней скобки, если нет, то возвращает -1
+  if (!(typeof arg === "string") || !arg.match(/[()]/)) {
+    return -1;
   } else {
-    // подсчет левых скобок
-    for (let i = 0; i <= x.length; i++) {
-      if (x.charAt(i) === "(") {
-        countLeft++;
+    // циклом создаем массив только из скобочек
+    for (let i = 0; i <= arg.length; i++) {
+      if (arg.charAt(i) == "(") {
+        stack.push("(");
       }
-
-      // подсчет правых скобок
-      if (x.charAt(i) === ")") {
-        countRight++;
+      if (arg.charAt(i) == ")") {
+        stack.push(")");
       }
     }
-    // countLeftSum = countLeft;
-    // countRightSum = countRight;
-
-    if (countLeft & 1 ) {
-      countLeftSum ++;
+    //превращаем массив в строчку 
+    stack = stack.join("");
+    //пищем цикл, который заменяет каждый проход все "()" на пустое место
+    //(удаляет правильные комбинации скобочек)
+    for (let i = 0; i <= arg.length; i++) {
+      stack = stack.replace(/\(\)/, "");
     }
-
-    if (countRight & 1) {
-      countRightSum++;
-    }
-
-
-    // сравнение левых с правыми
-    if (countLeft > countRight) {
-      sum =  (countLeft - countRight) ;
-      if (countLeft &1){
-          sum ++
-      }
-      if (countRight &1){
-          sum++
-      }
-   
-    }
-
-    // сравнение правых с левыми
-    if (countRight > countLeft) {
-      sum = (countRight - countLeft);
-      if (countLeft &1){
-        sum ++
-    }
-    if (countRight &1){
-        sum++
-    }
-    }
-
-    // конечный вывод
   }
-  console.log(countLeftSum + " " + countRightSum);
-  console.log(countLeft + " " + countRight);
-  return sum;
+  //   console.log(stack); - вывести строчку из неправильных комбинаций скобочек
+  //возвращаем длину строчки, состоящей только из неправильных комбинаций скобочек
+  return stack.length;
 }
-
-console.log(checkBrackets('1)()(())2(()'));
-// console.log(checkBrackets(NaN));
+console.log(checkBrackets('))(('));
